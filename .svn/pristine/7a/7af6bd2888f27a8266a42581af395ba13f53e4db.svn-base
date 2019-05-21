@@ -1,0 +1,111 @@
+<template>
+  <div style="display: inline-block;">
+    <el-upload 
+    class="upload-demo" 
+    :action="uploadUrl"
+    :headers='headers'
+    :data="params"
+    :on-preview="handlePreview" 
+    :on-remove="handleRemove" 
+    :on-success="handleSuccess"
+    :before-remove="beforeRemove" 
+    :before-upload="beforeUpload"
+    :limit="3" 
+    :show-file-list="false"
+    :on-exceed="handleExceed" 
+    accept="image/png, image/jpg, imgae/jpeg"
+    :file-list="fileList">
+      <el-button size="small" type="primary" v-if="classEl.p3" class="p3">点击上传</el-button>
+      <div class="honored" v-if="classEl.honored">
+        <i class="el-icon-upload"></i>
+        <p>点击上传</p>
+      </div>
+    </el-upload>
+  </div>
+</template>
+
+<script>
+// :http-request="httpRequest"
+export default {
+  data () {
+    return {
+      headers: {
+        Token: this.$cookie.get('token'),
+      },
+      params: {
+        bgr: 'bg',
+        metid: 1
+      },
+      fileList: [],
+      imgUrl: '', //回显路径
+      classEl: {
+        p3: false, // 控制样式（会议背景）
+        honored: false //
+      }
+      
+    }
+  },
+  computed: {
+    uploadUrl() {
+      return this.$axios.adornUrl('/fileUpload/uplodImgs')
+    }
+  },
+  methods: {
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview (file) {
+      console.log(file)
+    },
+    handleSuccess(response, file, fileList) {
+      this.imgUrl = this.$axios.adornUrl('/wx/downFile/' + response.uuid) 
+      this.$emit('uploads', this.imgUrl)
+    },
+    handleExceed (files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+    },
+    beforeRemove (file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`);
+    },
+    // shangchuan
+    beforeUpload(file) {
+      console.log(file)
+      this.params.uuid = file.uid
+      if (file.size > 1024 * 1024) {
+        alert('文件过大')
+        return false
+      }
+    },
+    classif(str) {
+      Object.keys(this.classEl).forEach((key, index) => {
+        if (str == key) {
+          this.classEl[key] = true
+        }
+      })
+    }
+
+  }
+}
+</script>
+
+<style scoped lang="scss">
+.p3 {
+    width: 200px;
+    height: 34px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-top: 30px;
+  }
+.honored{
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgba(210,210,210,1);
+  i{
+    font-size: 30px;
+    margin-top:20px;
+  }
+  p{
+    margin-top: -12px;
+  }
+}
+</style>

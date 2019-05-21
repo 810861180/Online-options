@@ -1,0 +1,120 @@
+<template>
+  <div>
+    <BaseDialog :width="'45%'" :title="'新增嘉宾信息'" ref="dialog" @confirm="confirmAdd" @cancle="cancleAdd">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="姓名" prop="guestName" style="width:92%">
+          <el-input v-model="ruleForm.guestName"></el-input>
+        </el-form-item>
+        <el-form-item label="职位" prop="guestPost" style="width:92%">
+          <el-input v-model="ruleForm.guestPost"></el-input>
+        </el-form-item>
+        <el-form-item label="照片" prop="imgSrc" style="width:92%">
+          <upload @uploads='uploads' ref="honoredUpload"></upload>
+          <div class="imgs">
+            <img :src="ruleForm.imgSrc" border="0" alt="">
+          </div>
+        </el-form-item>
+        <el-form-item label="简述" prop="guestDesc" style="width:92%">
+          <el-input v-model="ruleForm.guestDesc" type="textarea" :autosize="{ minRows: 4, maxRows: 4}"></el-input>
+        </el-form-item>
+      </el-form>
+    </BaseDialog>
+  </div>
+</template>
+
+<script>
+import upload from '../imgUpload/upload'
+export default {
+  components: {
+    upload
+  },
+  data () {
+    return {
+      ruleForm: {
+        guestName: '',
+        guestPost: '',
+        guestDesc: '',
+        imgSrc: '',
+        guestPic: ''
+      },
+      rules: {
+        guestName: [
+          { required: true, message: '请输入嘉宾姓名', trigger: 'blur' },
+        ],
+        guestPost: [
+          { required: true, message: '请输入职位', trigger: 'blur' },
+        ],
+        guestDesc: [
+          { required: true, message: '请输入嘉宾简述', trigger: 'blur' },
+        ],
+        imgSrc: [
+          { required: true, message: '请输入嘉宾简述', trigger: 'blur' },
+        ]
+      },
+      flag: true
+    }
+  },
+  methods: {
+    open () {
+      this.$refs.dialog.open().then(() => {
+        this.$refs.honoredUpload.classif('honored')
+      })
+
+    },
+    close () {
+      this.$refs.dialog.close()
+    },
+    // 确认
+    confirmAdd () {
+      
+      if (this.flag) {
+        let params = {
+          ...this.ruleForm,
+          metId: JSON.parse(this.$cookie.get('userinfo')).id
+        }
+        delete params.imgSrc
+        this.$addHonored(params).then(data => {
+          if (data.flag) {
+            this.$notify({
+              message: data.message,
+              type: 'success'
+            })
+            this.$emit('addSucess')
+          }
+        })
+      }else {
+        this.ruleForm.guestPic = this.ruleForm.uuid
+        debugger
+        this.$editHonored(this.ruleForm).then(data => {
+          console.log(data)
+        })
+      }
+
+    },
+    // 取消
+    cancleAdd () {
+      console.log('取消了')
+    },
+    uploads (val) {
+      this.ruleForm.imgSrc = this.$axios.adornUrl('/wx/downFile/' + val.uuid)
+      this.ruleForm.guestPic = val.uuid
+      this.ruleForm.uuid = val.uuid
+    }
+  }
+}
+</script>
+
+<style lang='scss' scoped>
+.imgs {
+  width: 100px;
+  height: 100px;
+  border: 1px solid rgba(210, 210, 210, 1);
+  display: inline-block;
+  vertical-align: top;
+  margin-left: 20px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

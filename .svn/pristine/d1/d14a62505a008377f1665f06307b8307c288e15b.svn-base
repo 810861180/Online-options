@@ -1,0 +1,240 @@
+<template>
+  <div>
+    <div class="title">
+      <div class="chunk"></div>
+      <p>会议日程</p>
+    </div>
+    <div class="floatCard">
+      <el-tabs v-model="activeName" type="card" @tab-click="handleClick">
+        <el-tab-pane label="新建日程" name="first">
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" class="demo-ruleForm">
+            <el-form-item label="时间" prop="date1">
+              <el-date-picker v-model="ruleForm.date1" type="datetime" placeholder="选择开始时间"></el-date-picker>
+              <el-date-picker v-model="ruleForm.date2" type="datetime" placeholder="选择结束时间"></el-date-picker>
+            </el-form-item>
+            <el-form-item label="内容" prop="content">
+              <el-input type="textarea" :rows="7" placeholder="请输入内容" v-model="ruleForm.content"></el-input>
+            </el-form-item>
+            <el-form-item label="主讲" prop="speaker">
+              <el-input v-model="ruleForm.speaker" placeholder="请输入主讲人" style="width: 93.5%;"></el-input>
+            </el-form-item>
+            <el-form-item label="地点" prop="site">
+              <el-input type="textarea" :rows="3" placeholder="请输入地址" v-model="ruleForm.site"></el-input>
+            </el-form-item>
+          </el-form>
+          <div class="submitFormbtn">
+            <el-button type="primary" @click="submitForm">新建</el-button>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="上传" name="second">
+
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+
+    <div class="tableCard">
+      <el-table :data="tableData" style="width: 100%;" header-cell-class-name="hedClass">
+        <el-table-column :prop="key" :label="key" align="center" :render-header="renders" v-for="(item, key, index) in tableData[0]" :key="index">
+          <span class="tableSpan">{{item}}</span>
+        </el-table-column>
+      </el-table>
+
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      activeName: 'first',
+      ruleForm: {
+        date1: '',
+        date2: '',
+        content: '',
+        speaker: '',
+        site: ''
+      },
+      rules: {
+        date1: [
+          { required: true, message: '请输入时间', trigger: 'blur' },
+        ],
+        content: [
+          { required: true, message: '请填写内容', trigger: 'blur' },
+        ],
+        speaker: [
+          { required: true, message: '请填写主讲人', trigger: 'blur' },
+        ],
+        site: [
+          { required: true, message: '请填写地点', trigger: 'blur' },
+        ],
+      },
+      tableData: [
+        {
+          '时间': '2016-05-02-2016-05-02',
+          '主题': 'asd',
+          '主讲人': '王小虎',
+          '地点': '上海市普陀区金沙江路 1518 弄'
+        },
+        {
+          '时间': '2016-05-02-2016-05-02',
+          '主题': 'asd',
+          '主讲人': '王小虎',
+          '地点': '上海市普陀区金沙江路 1518 弄'
+        },
+        {
+          '时间': '2016-05-02-2016-05-02',
+          '主题': 'asd',
+          '主讲人': '王小虎',
+          '地点': '上海市普陀区金沙江路 1518 弄'
+        },
+        {
+          '时间': '2016-05-02-2016-05-02',
+          '主题': 'asd',
+          '主讲人': '王小虎',
+          '地点': '上海市普陀区金沙江路 1518 弄'
+        },
+      ]
+    }
+  },
+  methods: {
+    // tabs
+    handleClick (tab, event) {
+      console.log(tab, event)
+    },
+    // form
+    submitForm () {
+      this.$refs['ruleForm'].validate((valid) => {
+        if (valid) {
+          alert('submit!');
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+    // 表格
+    renders (h, { column }) { // h即为cerateElement的简写，具体可看vue官方文档
+      return h(
+        'span',
+        [
+          h('i', {
+            class: this.icon(column.property),
+            style: 'margin-right:5px;color:#fff;'
+          }),
+          h('span', column.label)
+        ]
+      )
+    },
+    icon (property) {
+      switch (property) {
+        case '时间':
+          return 'el-icon-time'
+        break
+        case '主题':
+          return 'el-icon-document'
+        break
+        case '主讲人':
+          return 'el-icon-service'
+        break
+        case '地点':
+          return 'el-icon-location'
+        break
+      }
+    }
+
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.title {
+  width: 100%;
+  height: 50px;
+  border: 1px solid #ebeef5;
+  background-color: #fff;
+  .chunk {
+    height: 100%;
+    width: 12px;
+    display: inline-block;
+    background: $--color-primary;
+  }
+  p {
+    display: inline-block;
+    line-height: 50px;
+    vertical-align: top;
+    margin-left: 10px;
+    font-size: 15px;
+    font-family: Adobe Heiti Std R;
+    font-weight: normal;
+    color: $--color-primary;
+  }
+}
+
+.floatCard {
+  width: 315px;
+  background: #fff;
+  position: fixed;
+  top: 170px;
+  right: 16px;
+  padding: 0 0 20px 0;
+}
+
+.tableCard {
+  margin-top: 15px;
+  width: 80%;
+  background: #fff;
+  .tableSpan{
+    color: #867E7E;
+  }
+}
+</style>
+
+<style lang="scss">
+
+.floatCard {
+  .el-textarea__inner {
+    width: 93.5%;
+  }
+  .el-tabs__nav {
+    width: 100%;
+    display: flex;
+    border: 1px solid $--color-primary !important;
+    border-radius: 0 !important;
+  }
+  .el-tabs__item {
+    flex: 1;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    height: 36px !important;
+    text-align: center;
+    line-height: 36px !important;
+  }
+  .is-top {
+    color: $--color-primary;
+  }
+  .is-active {
+    background: $--color-primary !important;
+    border: none !important;
+  }
+  .el-input--medium .el-input__inner {
+    height: 32px;
+    line-height: 32px;
+  }
+  .submitFormbtn {
+    text-align: center;
+    margin-top: 50px;
+    .el-button {
+      height: 30px;
+      width: 100px;
+      line-height: 30px;
+      padding: 0;
+    }
+  }  
+}
+
+.hedClass{
+  background: $--color-primary !important;
+  color: #fff;
+}
+</style>

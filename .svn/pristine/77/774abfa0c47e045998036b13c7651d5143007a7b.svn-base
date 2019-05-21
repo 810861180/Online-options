@@ -1,0 +1,10 @@
+@import 'normalize';       // api: https://github.com/necolas/normalize.css/
+@import 'variables';       // 站点变量
+@import 'base';
+@import 'transition.scss';
+
+
+// element
+.el-input__inner, .el-checkbox__inner, .el-textarea__inner{
+  border-radius: 0;
+}

@@ -1,0 +1,94 @@
+<template>
+  <div>
+    <BaseDialog :width="'45%'" :title="'新增嘉宾信息'" ref="dialog" @confirm="confirmAdd" @cancle="cancleAdd">
+      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+        <el-form-item label="姓名" prop="name" style="width:92%">
+          <el-input v-model="ruleForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="职位" prop="position" style="width:92%">
+          <el-input v-model="ruleForm.position"></el-input>
+        </el-form-item>
+        <el-form-item label="照片" prop="imgSrc" style="width:92%">
+          <upload @uploads='uploads' ref="honoredUpload"></upload>
+          <div class="imgs">
+            <img :src="ruleForm.imgSrc" border="0" alt="">
+          </div>
+        </el-form-item>
+        <el-form-item label="简述" prop="sketch" style="width:92%">
+          <el-input v-model="ruleForm.sketch" type="textarea" :autosize="{ minRows: 4, maxRows: 4}"></el-input>
+        </el-form-item>
+      </el-form>
+    </BaseDialog>
+  </div>
+</template>
+
+<script>
+import upload from '../imgUpload/upload'
+export default {
+  components: {
+    upload
+  },
+  data() {
+    return {
+      ruleForm: {
+          name: '',
+          position: '',
+          sketch: '',
+          imgSrc: ''
+        },
+        rules: {
+          name: [
+            { required: true, message: '请输入嘉宾姓名', trigger: 'blur' },
+          ],
+          position: [
+            { required: true, message: '请输入职位', trigger: 'blur' },
+          ],
+          sketch: [
+            { required: true, message: '请输入嘉宾简述', trigger: 'blur' },
+          ],
+          imgSrc: [
+            { required: true, message: '请输入嘉宾简述', trigger: 'blur' },
+          ]
+        }
+    }
+  },
+  methods: {
+    open () {
+      this.$refs.dialog.open().then(() => {
+        this.$refs.honoredUpload.classif('honored')
+      })
+      
+    },
+    close () {
+      this.$refs.dialog.close()
+    },
+    // 确认
+    confirmAdd () {
+      console.log('确认了')
+      this.$emit('addSucess')
+    },
+    // 取消
+    cancleAdd () {
+      console.log('取消了')
+    },
+    uploads(val) {
+      this.ruleForm.imgSrc = val
+    }
+  }
+}
+</script>
+
+<style lang='scss' scoped> 
+  .imgs{
+    width: 100px;
+    height: 100px;
+    border: 1px solid rgba(210,210,210,1);
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 20px;
+    img{
+      width: 100%;
+      height: 100%;
+    }
+  }
+</style>

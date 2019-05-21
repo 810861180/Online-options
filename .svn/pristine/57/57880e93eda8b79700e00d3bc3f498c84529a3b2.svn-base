@@ -1,0 +1,42 @@
+<template>
+  <div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>报名表单设计</span>
+      </div>
+      <fm-making-form ref="makingForm" upload preview generate-code generate-json>
+        <template slot="action"></template>
+      </fm-making-form>
+    </el-card>
+    <div class="btnArea">
+      <el-button type="primary" icon="el-icon-check" class="submitBtn" @click="getJSON">保存表单</el-button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  mounted () { },
+  methods: {
+    getJSON () {
+      const data = this.$refs['makingForm'].getJSON()
+      const json = JSON.stringify(data)
+      console.log(json)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.btnArea {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+.submitBtn {
+  height: 45px;
+  width: 15%;
+  font-size: 16px;
+}
+</style>

@@ -1,0 +1,41 @@
+import axios from '@/utils/axios'
+
+export default {
+  /* 登录 */
+  // login: '/userLogin',
+  login (params) {
+    return axios.post('/userLogin', params)
+  },
+  /* 验证码 */
+  // kaptcha: '/images/kaptcha.jpg',
+  kaptcha () {
+    return '/images/kaptcha.jpg'
+  },
+  /* 获取用户信息 */
+  getUserInfo: 'getUserInfo',
+  /* 会场查询 、新增、修改 */
+  roomQuery: 'api/v1/rooms',
+  /* 会场分页查询 */
+  roomQueryByPage: 'api/v1/rooms/page',
+  /* 座位配置查询、新增、修改 */
+  seatQuery: 'api/v1/seatconf',
+  /* 票价新增 */
+  priceQuery: 'api/v1/tickets',
+  /* 票价分页查询 */
+  priceQueryByPage: 'api/v1/tickets/page',
+  /* 省 */
+  // queryProvince: 'region/queryProvince/0',
+  queryProvince () {
+    return axios.get('region/queryProvince/0')
+  },
+  /* 市 */
+  // querycity: '/region/querycity',
+  querycity (params) {
+    return axios.get('/region/querycity/' + params)
+  },
+  /* 区 */
+  // querycounty: 'region/querycounty'
+  querycounty (params) {
+    return axios.get('/region/querycounty/' + params)
+  }
+}

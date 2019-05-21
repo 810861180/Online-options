@@ -1,0 +1,44 @@
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all .5s;
+}
+
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/*************** rotate-fall **************/
+.rotate-fall-enter-active {
+  z-index: 1;
+  animation: scaleUp 0.7s ease both;
+}
+.rotate-fall-leave-active {
+  z-index: 999;
+  transform-origin: 0% 0%;
+  animation: rotateFall 1s both ease-in;
+}
+@keyframes rotateFall {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  20% {
+    transform: rotateZ(10deg);
+    animation-timing-function: ease-out;
+  }
+  40% {
+    transform: rotateZ(17deg);
+  }
+  60% {
+    transform: rotateZ(16deg);
+  }
+  100% {
+    transform: translateY(100%) rotateZ(17deg);
+  }
+}
+

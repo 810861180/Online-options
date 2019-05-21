@@ -1,0 +1,54 @@
+const _import = require('./import-' + process.env.NODE_ENV)
+const layout = _import('layout/router-view')
+
+export default [
+  {
+    path: '/metting',
+    name: 'meeting',
+    redirect: 'noredirect',
+    component: layout,
+    meta: {
+      title: '会议安排',
+      isTab: true,
+      icon: 'iconhuiyianpai'
+    },
+    children: [
+      {
+        path: 'room-list',
+        component: _import('rooms/index'),
+        name: 'room-list',
+        meta: {
+          title: '会场',
+          isTab: true,
+          icon: 'iconhuiyishi'
+        }
+      },
+      {
+        path: 'journey',
+        component: _import('journey/index'),
+        name: 'journey-index',
+        meta: {
+          title: '日程',
+          isTab: true,
+          icon: 'iconrichenganpai'
+        }
+      },
+      {
+        path: 'seat',
+        component: _import('journey/seat'),
+        name: 'metting-seat',
+        meta: {
+          title: '座位',
+          isTab: true,
+          icon: 'iconshafa'
+        }
+      },
+      {
+        path: 'price',
+        component: _import('price/index'),
+        name: 'price',
+        meta: { title: '票价', isTab: true, icon: 'iconjiage' }
+      }
+    ]
+  }
+]

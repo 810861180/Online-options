@@ -1,0 +1,53 @@
+<template>
+  <div class="mod-home">
+    <h3>简介</h3>
+    <ul>
+      <li>
+        首页
+      </li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import _ from 'lodash'
+export default {
+  //     activated () {
+  //       this.user()
+  //     },
+  //     methods: {
+  //         user(){
+  //              this.$router.push('sys-user');
+  //       },
+  //     }
+  beforeRouteEnter: (to, from, next) => {
+    /*
+     * 从旧的会务系统跳到当前页面时
+     * 获取用户数据，并更改token、userinfo、页面地址
+    */
+    let {
+      token,
+      metId
+    } = to.query
+    next(vm => {
+      if (!_.isEmpty(token)) {
+        vm.$cookie.set('token', token)
+        vm.$axios.get(vm.$getUserInfo, { params: { token: token, metId: metId } }).then((data) => {
+          if (data.data.code === 200) {
+            let userInfo = data.data.data
+            vm.$store.commit('user/setUserInfo', JSON.stringify(userInfo))
+            vm.$cookie.set('userinfo', JSON.stringify(userInfo))
+            vm.$router.replace({ name: 'home' })
+          }
+        })
+      }
+    })
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.mod-home {
+  line-height: 1.5;
+}
+</style>

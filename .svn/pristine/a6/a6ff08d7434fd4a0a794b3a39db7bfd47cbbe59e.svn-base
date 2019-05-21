@@ -1,0 +1,19 @@
+@import 'normalize';       // api: https://github.com/necolas/normalize.css/
+@import 'variables';       // 站点变量
+@import 'base';
+@import 'transition.scss';
+
+
+// element
+.el-input__inner, .el-checkbox__inner, .el-textarea__inner{
+  border-radius: 0;
+}
+.el-card{
+  border-radius: 0;
+}
+.el-dialog__header{
+  background: #00A0E9;
+}
+.el-dialog__title{
+  color: white;
+}
