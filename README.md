@@ -1,6 +1,6 @@
 # meet-manager
 
-> 普亿特会议互动系统
+> 会议系统
 
 ## Build Setup
 
