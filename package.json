@@ -14,7 +14,7 @@
     "prod:server": "cross-env NODE_ENV='production' node config/dist.server.js"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "element-ui": "^2.8.2",
     "form-making": "^1.1.17",
     "gsap": "^2.1.2",
